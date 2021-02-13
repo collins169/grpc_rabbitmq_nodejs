@@ -6,9 +6,9 @@ services:
       context: ./customerService
       dockerfile: Dockerfile
     environment:
-      - DB_PASS=QmsR4htUaBLSfJMj
-      - DB_USER=collins169
-      - DB_NAME=GRPC1
+      - DB_PASS=
+      - DB_USER=
+      - DB_NAME=
     ports:
       - "3000:3000"
   order-service:
@@ -17,10 +17,10 @@ services:
       context: ./orderService
       dockerfile: Dockerfile
     environment:
-      - DB_PASS=QmsR4htUaBLSfJMj
-      - DB_USER=collins169
-      - DB_NAME=GRPC1
-      - MQ_URL=amqps://gvitaehz:z_WIuhHTkl_DG1Nr234w-j5wT7-89SV7@eagle.rmq.cloudamqp.com/gvitaehz
+      - DB_PASS=
+      - DB_USER=
+      - DB_NAME=
+      - MQ_URL=
       - MQ_CHANNEL=GRPC_CHANNEL
       - RESPONSE_QUEUE=PAYMENT_QUEUE
       - REQUEST_QUEUE=ORDER_QUEUE
@@ -32,10 +32,10 @@ services:
       context: ./paymentService
       dockerfile: Dockerfile
     environment:
-      - DB_PASS=QmsR4htUaBLSfJMj
-      - DB_USER=collins169
-      - DB_NAME=GRPC1
-      - MQ_URL=amqps://gvitaehz:z_WIuhHTkl_DG1Nr234w-j5wT7-89SV7@eagle.rmq.cloudamqp.com/gvitaehz
+      - DB_PASS=
+      - DB_USER=
+      - DB_NAME=
+      - MQ_URL=
       - MQ_CHANNEL=GRPC_CHANNEL
       - RESPONSE_QUEUE=PAYMENT_QUEUE
       - REQUEST_QUEUE=ORDER_QUEUE
