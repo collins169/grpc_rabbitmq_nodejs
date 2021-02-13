@@ -19,30 +19,34 @@ db.once('open', function() {
 
 
 const processPayment = async () => {
-    const queueResponse = await recieveMessage(process.env.REQUEST_QUEUE);
-    console.log({queueResponse});
-    if(queueResponse.err){
-        throw new Error(queueResponse.err);
-    }
+    try{
+        const queueResponse = await recieveMessage(process.env.REQUEST_QUEUE);
+        console.log({queueResponse});
+        if(queueResponse.err){
+            throw new Error(queueResponse.err);
+        }
 
-    if(queueResponse.msg){
-        const id = queueResponse.msg.orderId;
-        const order = await Order.findOne({_id: id}).exec();
-        if(order){
-            const newPayment = new Payment({
-                _id: new mongoose.Types.ObjectId(),
-                customerId: order.customerId,
-                productId: order.productId,
-                orderId: id,
-                status: 'complete'
-            });
-            await newPayment.save();
-            console.log({newPayment});
-            if(newPayment){
-                const updateOrder = await Order.updateOne({_id: id}, {$set: {orderStatus: "fulfill"}});
-                console.log({updateOrder});
+        if(queueResponse.msg){
+            const id = queueResponse.msg.orderId;
+            const order = await Order.findOne({_id: id}).exec();
+            if(order){
+                const newPayment = new Payment({
+                    _id: new mongoose.Types.ObjectId(),
+                    customerId: order.customerId,
+                    productId: order.productId,
+                    orderId: id,
+                    status: 'complete'
+                });
+                await newPayment.save();
+                console.log({newPayment});
+                if(newPayment){
+                    const updateOrder = await Order.updateOne({_id: id}, {$set: {orderStatus: "fulfill"}});
+                    console.log({updateOrder});
+                }
             }
         }
+    }catch(err){
+        console.error(err);
     }
 }
 setInterval(function(){

@@ -2,6 +2,8 @@ require("dotenv").config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const getDockerHost = require('get-docker-host');
+const isInDocker = require('is-in-docker');
 let PROTO_PATH = __dirname + '/pb/messages.proto';
 let grpc = require('grpc');
 let protoLoader = require('@grpc/proto-loader');
@@ -32,8 +34,28 @@ db.once('open', function() {
   console.log("Connection Successful!");
 });
 
+const checkDocker = () => {
+    return new Promise((resolve, reject) => {
+        if (isInDocker()) {
+            getDockerHost((error, result) => {
+                if (result) {
+                    resolve(result);
+                } else {
+                    reject(error);
+                }
+            });
+        } else {
+            resolve('127.0.0.1');
+        }
+    });
+};
 
-var client = new OrderProto.OrderService('localhost:50051', grpc.credentials.createInsecure());
+
+
+var client = new OrderProto.OrderService('127.0.0.1:50051', grpc.credentials.createInsecure());
+checkDocker().then((addr) => {
+    client = new OrderProto.OrderService(`${addr}:50051`, grpc.credentials.createInsecure());
+})
 app.post('/order', async(req, res) => {
     const payload = {
         customerId: req.body.customerId,

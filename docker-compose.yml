@@ -1,0 +1,41 @@
+version: "3"
+services:
+  customer-service:
+    container_name: customer-service
+    build:
+      context: ./customerService
+      dockerfile: Dockerfile
+    environment:
+      - DB_PASS=QmsR4htUaBLSfJMj
+      - DB_USER=collins169
+      - DB_NAME=GRPC1
+    ports:
+      - "3000:3000"
+  order-service:
+    container_name: order-service
+    build:
+      context: ./orderService
+      dockerfile: Dockerfile
+    environment:
+      - DB_PASS=QmsR4htUaBLSfJMj
+      - DB_USER=collins169
+      - DB_NAME=GRPC1
+      - MQ_URL=amqps://gvitaehz:z_WIuhHTkl_DG1Nr234w-j5wT7-89SV7@eagle.rmq.cloudamqp.com/gvitaehz
+      - MQ_CHANNEL=GRPC_CHANNEL
+      - RESPONSE_QUEUE=PAYMENT_QUEUE
+      - REQUEST_QUEUE=ORDER_QUEUE
+    ports:
+      - "50051:50051"
+  payment-service:
+    container_name: payment-service
+    build:
+      context: ./paymentService
+      dockerfile: Dockerfile
+    environment:
+      - DB_PASS=QmsR4htUaBLSfJMj
+      - DB_USER=collins169
+      - DB_NAME=GRPC1
+      - MQ_URL=amqps://gvitaehz:z_WIuhHTkl_DG1Nr234w-j5wT7-89SV7@eagle.rmq.cloudamqp.com/gvitaehz
+      - MQ_CHANNEL=GRPC_CHANNEL
+      - RESPONSE_QUEUE=PAYMENT_QUEUE
+      - REQUEST_QUEUE=ORDER_QUEUE

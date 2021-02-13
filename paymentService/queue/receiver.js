@@ -5,6 +5,7 @@ exports.recieveMessage = async (QUEUE) => {
     return new Promise(async(resolve, reject) => {
         try{
             // Step 1: Create Connection
+            // console.log("URL: ", process.env.MQ_URL);
             const connect = await amqp.connect(process.env.MQ_URL, "heartbeat=60");
             const channel = await connect.createChannel();
 
