@@ -7,7 +7,7 @@ const Order = require('./model/order');
 const {recieveMessage} = require('./queue/receiver');
 const {sendMessage} = require('./queue/sender');
 
-mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@grpc1.7hcbv.mongodb.net/${process.env.GRPC1}?retryWrites=true&w=majority`,
+mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@grpc1.7hcbv.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
  {useNewUrlParser: true, useUnifiedTopology: true }
  );
 

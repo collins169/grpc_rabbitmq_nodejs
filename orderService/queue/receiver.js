@@ -15,7 +15,7 @@ exports.recieveMessage = async (QUEUE) => {
             // Step 4: Receive Messages
             await channel.consume(QUEUE, (msg) => {
                 console.log(`Message received: ${msg.content.toString()}`);
-                resolve({err, msg: msg.content});
+                resolve({err, msg: msg.content.toString()});
                 channel.ack(msg);
                 channel.cancel('myconsumer');
             }, {consumerTag: 'myconsumer'});
