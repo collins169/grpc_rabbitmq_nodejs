@@ -1,0 +1,38 @@
+syntax = "proto3";
+package order;
+message OrderRequest {
+    int32 customerId = 1;
+    int32 productId = 2;
+}
+
+message OrderResponse {
+    int32 customerId = 1;
+    int32 productId = 2;
+    string orderId = 3;
+    string orderStatus = 4;
+}
+
+message ProcessOrderRequest {
+    OrderRequest orderRequest = 1;
+}
+
+message ProcessOrderResponse {
+    OrderResponse orderResponse = 1;
+}
+
+message request {
+    required string id = 1;
+}
+message response {
+    OrderResponse orderResponse = 1;
+}
+
+message findAll{
+    repeated OrderResponse orderResponse = 1;
+}
+
+service OrderService {
+    rpc orderProduct (ProcessOrderRequest) returns (ProcessOrderResponse);
+    rpc findOrderById (request) returns (response);
+    rpc findAllOrder (request) returns (findAll);
+}
